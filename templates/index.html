@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Tumor Prediction</title>
+</head>
+
+<body>
+
+  <h1>Brain Tumor Prediction API</h1>
+  <form id="prediction-form" enctype="multipart/form-data">
+    <label for="input">Upload Image:</label>
+    <input type="file" id="input" name="input" accept="image/*" required>
+    <button type="submit">Predict</button>
+  </form>
+  <p id="prediction-result"></p>
+
+  <script>
+
+    document.getElementById('prediction-form').onsubmit = async function (event) {
+
+      event.preventDefault();
+      const formData = new FormData();
+      const fileField = document.querySelector('input[type="file"]');
+      formData.append('input', fileField.files[0]);
+
+      const response = await fetch('/predict', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      document.getElementById('prediction-result').innerText = `Prediction: ${data.prediction}`;
+    };
+  </script>
+</body>
+
+</html>
